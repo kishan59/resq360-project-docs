@@ -195,30 +195,28 @@ Common status codes:
 
 ## Sync payload contract
 
-Every write request (POST/PATCH to entity endpoints) must include a top-level `sync` object:
+Current backend implementation accepts sync metadata as top-level request fields:
 
 ```json
 {
-  "sync": {
-    "clientMutationId": "uuid-string",
-    "deviceId": "mobile-device-id",
-    "baseVersion": "2026-04-20T12:34:56Z",
-    "changedFields": ["temperament", "cage_zone"],
-    "changedAtClientTs": "2026-04-20T12:35:00Z"
-  },
+  "clientMutationId": "uuid-string",
+  "deviceId": "mobile-device-id",
+  "baseVersion": "2026-04-20T12:34:56Z",
+  "changedFields": ["temperament", "cage_zone"],
+  "changedAtClientTs": "2026-04-20T12:35:00Z",
   "temperament": "CALM",
   "cage_zone": "DANGER"
 }
 ```
 
 Required fields:
-- `sync.clientMutationId` - UUID to prevent replay on retry
-- `sync.deviceId` - Mobile device identifier
-- `sync.baseVersion` - Last known `updated_at` of entity (for update operations; null for create)
+- `clientMutationId` - UUID to prevent replay on retry
+- `deviceId` - Mobile device identifier
+- `baseVersion` - Last known `updated_at` of entity (for update operations; null for create)
 
 Optional fields:
-- `sync.changedFields` - Array of field names that changed (helps track audit)
-- `sync.changedAtClientTs` - Timestamp when user made the change locally
+- `changedFields` - Array of field names that changed (helps track audit)
+- `changedAtClientTs` - Timestamp when user made the change locally
 
 ## Server response per mutation
 

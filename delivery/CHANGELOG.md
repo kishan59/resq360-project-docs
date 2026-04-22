@@ -1,5 +1,43 @@
 # ResQ360 Changelog
 
+## 2026-04-21 - Mobile stabilization pass (contract alignment + Android tooling)
+
+### Mobile contract and sync alignment
+- Reworked mobile API service to use backend-aligned endpoints (`/api/auth/login`, `/api/auth/me`, `/api/encounters`, `/api/upload`)
+- Removed invalid upload token usage and switched to secure token retrieval from `expo-secure-store`
+- Added robust JSON response parsing and centralized auth token handling in mobile service layer
+- Added client sync metadata utility for `clientMutationId` and persistent `deviceId`
+
+### Offline data model hardening
+- Upgraded WatermelonDB schema from v2 to v3
+- Added local rescue fields required by backend contract and sync lifecycle:
+	- `pickup_accuracy_m`, `pickup_captured_at`
+	- `client_mutation_id`, `device_id`, `base_version`
+	- `server_encounter_id`, `last_sync_error`
+- Added explicit WatermelonDB migration file and wired migrations into database adapter
+
+### Intake and sync flow fixes
+- Updated Rescue Intake save flow to persist location accuracy and capture timestamp
+- Persisted sync identifiers at intake creation so retries are idempotent
+- Rebuilt sync engine payload mapping to match local model and backend contract
+- Added partial-failure handling (`sync_failed`) with local error persistence and improved user feedback
+
+### Auth bootstrap hardening
+- Added token validation on app boot via `/auth/me`
+- Purges stale/invalid token from secure storage to avoid broken ghost sessions
+
+### Android build/run reliability on Windows
+- Added `npm run android:dev` wrapper script for reliable Android install from long Windows paths
+- Script automatically:
+	- runs `expo prebuild --platform android`
+	- generates `android/local.properties` from detected SDK path
+	- uses temporary `subst` drive mapping when project path is long
+- Added `npm run android:prepare` utility to generate `android/local.properties` manually
+
+### Docs and developer workflow updates
+- Updated mobile README with env-based API config (`EXPO_PUBLIC_API_BASE_URL`)
+- Added documented Android-safe workflow replacing repeated manual local.properties edits
+
 ## 2026-04-20 - Backend hardening pass
 
 ### Prisma schema

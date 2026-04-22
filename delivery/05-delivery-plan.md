@@ -2,7 +2,7 @@
 
 ## Current phase
 
-Project foundation hardening and contract alignment.
+Backend hardening complete, mobile M2 stabilization in progress.
 
 ## Milestones
 
@@ -100,6 +100,6 @@ Mitigation: Explicit state machine and server-side validation.
 
 ## Next 3 priorities
 
-1. Execute Prisma migration: `npx prisma migrate dev --name contract-hardening` to apply schema changes to database.
-2. Mobile backend integration testing: validate endpoints against mobile client sync requirements.
+1. Complete mobile end-to-end validation on real device (offline intake -> reconnect -> sync -> server verification).
+2. Add mobile conflict-handling UX for sync failures and version conflicts.
 3. Audit trail UI: design read-only view for command center to display change history.

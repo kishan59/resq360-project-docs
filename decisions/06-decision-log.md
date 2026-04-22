@@ -15,6 +15,15 @@ This file records significant product and technical decisions.
 
 ## Decisions
 
+## 2026-04-21 - Scripted Android run workflow for Windows path reliability
+
+- Context: Running `expo run:android` from long workspace paths on Windows caused Gradle/path failures and repeated need to recreate `android/local.properties`.
+- Options considered: Keep manual workaround (move project to root drive); commit `android/local.properties`; add scripted workflow that automates short-path execution and SDK config.
+- Chosen option: Add scripted workflow (`npm run android:dev`) that runs prebuild, writes `android/local.properties`, and maps a short temporary drive path when needed.
+- Rationale: Removes repetitive manual fixes, keeps repository clean (no committed machine-specific local.properties), and stabilizes local developer setup.
+- Consequences: Team should prefer wrapper script over raw `expo run:android` on Windows.
+- Follow-up actions: Monitor whether `newArchEnabled` + WatermelonDB introduces native build issues and adjust app.json if needed.
+
 ## 2026-04-20 - Sync idempotency via clientMutationId
 
 - Context: Offline-first mobile clients may retry mutations after network failure, risking duplicate operations.
